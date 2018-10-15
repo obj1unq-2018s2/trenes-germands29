@@ -1,0 +1,205 @@
+import trenes.*
+describe "test de trenes"{
+	
+	test "velocidad maxima de formacion debe retornar 1000"{
+		var locomotora1 = new Locomotora()
+		var locomotora2 = new Locomotora()
+		var tren1= new Tren()
+		locomotora1.velocidadMaxima(3000)
+		locomotora2.velocidadMaxima(1000)
+		tren1.locomotoras([locomotora1, locomotora2])
+		assert.equals(tren1.velocidadMaximaDeFormacion() == 1000)
+	}
+	
+	
+	test "vagones livianos debe retornar 1"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var tren1 = new Tren()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDeCarga1.cargaMaxima(2500)
+		tren1.vagonesDePasajeros([vagonDePasajero1, vagonDePasajero2])
+		tren1.vagonesDeCarga([vagonDeCarga1])
+		assert.equals(tren1.vagonesLivianos() == 1)
+	}
+	
+	test "formacion eficiente debe dar verdadero"{
+		var locomotora1 = new Locomotora()
+		var locomotora2 = new Locomotora()
+		var locomotora3 = new Locomotora()
+		var tren1= new Tren()
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(600)
+		locomotora2.peso(780)
+		locomotora2.pesoMaximoQuePuedeArrastrar(4682)
+		locomotora3.peso(300)
+		locomotora3.pesoMaximoQuePuedeArrastrar(1800)
+		tren1.locomotoras([locomotora1, locomotora2, locomotora3])
+		assert.that(tren1.formacionEficiente())
+	}
+
+	test "formacion puede moverse debe retornar true"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var tren1 = new Tren()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDeCarga1.cargaMaxima(2500)
+		var locomotora1 = new Locomotora()
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		tren1.locomotoras([locomotora1])
+		tren1.vagonesDePasajeros([vagonDePasajero1, vagonDePasajero2])
+		tren1.vagonesDeCarga([vagonDeCarga1])
+		assert.that(tren1.formacionPuedeMoverse())
+		}
+		
+		
+		
+	test "kilos de empuje faltantes debe dar 0"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var tren1 = new Tren()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDeCarga1.cargaMaxima(2500)
+		var locomotora1 = new Locomotora()
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		tren1.locomotoras([locomotora1])
+		tren1.vagonesDePasajeros([vagonDePasajero1, vagonDePasajero2])
+		tren1.vagonesDeCarga([vagonDeCarga1])
+		assert.equals(tren1.kilosDeEmpujeFaltantes(), 0)
+	}
+	
+	
+	test "kilos de empuje faltantes debe dar 17540"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var tren1 = new Tren()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDeCarga1.cargaMaxima(25000)
+		var locomotora1 = new Locomotora()
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		tren1.locomotoras([locomotora1])
+		tren1.vagonesDePasajeros([vagonDePasajero1])
+		tren1.vagonesDeCarga([vagonDeCarga1])
+		assert.equals(tren1.kilosDeEmpujeFaltantes(),17540)
+	}
+	
+	test "vagones mas pesados de cada formacion debe retornar un conjunto con
+		  vagonDePasajero2, vagonDePasajero3, vagonDePasajero4"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDePasajero3 = new VagonDePasajero()
+		var vagonDePasajero4 = new VagonDePasajero()
+		var vagonDePasajero5 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var vagonDeCarga2 = new VagonDeCarga()
+		var vagonDeCarga3 = new VagonDeCarga()
+		var tren1 = new Tren()
+		var tren2 = new Tren()
+		var tren3 = new Tren()
+		var deposito1 = new Deposito()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero2.largo(4)
+		vagonDePasajero2.ancho(4)
+		vagonDePasajero3.largo(1)
+		vagonDePasajero3.ancho(1)
+		vagonDePasajero4.largo(7)
+		vagonDePasajero4.ancho(7)
+		vagonDePasajero5.largo(6)
+		vagonDePasajero5.ancho(6)
+		vagonDeCarga1.cargaMaxima(3000)
+		vagonDeCarga2.cargaMaxima(1500)
+		vagonDeCarga3.cargaMaxima(9000)
+		tren1.vagonesDePasajeros(#{vagonDePasajero1, vagonDePasajero2})
+		tren1.vagonesDeCarga(#{vagonDeCarga1})
+		tren2.vagonesDePasajeros(#{vagonDePasajero3})
+		tren3.vagonesDePasajeros(#{vagonDePasajero4, vagonDePasajero5})
+		tren3.vagonesDeCarga(#{vagonDeCarga2, vagonDeCarga3})
+		deposito1.formaciones(#{tren1, tren2, tren3})
+		assert.equals(deposito1.vagonesMasPesadosDeCadaFormacion(), #{vagonDePasajero2, vagonDePasajero3, vagonDePasajero4})
+	}
+	
+	
+	test"vagon mas pesado debe retornar vagon de pasajero 1"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var tren1 = new Tren()
+		vagonDePasajero1.ancho(3)	
+		vagonDePasajero1.largo(3)//2400
+		vagonDePasajero2.ancho(2) 
+		vagonDePasajero2.largo(9)// 5760
+		tren1.vagonesDeCarga(#{})
+		tren1.vagonesDePasajeros(#{vagonDePasajero1, vagonDePasajero2})
+		assert.equals(tren1.vagonMasPesado(), vagonDePasajero2)
+	}
+	
+	
+	test "formacion compleja retorna falso"{
+		var tren1 = new Tren()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.ancho(3)	
+		vagonDePasajero1.largo(3)//2400
+		vagonDePasajero2.ancho(2) 
+		vagonDePasajero2.largo(9)// 5760
+		vagonDeCarga1.cargaMaxima(400)
+		locomotora1.peso(150)
+		tren1.locomotoras(#{locomotora1})
+		tren1.vagonesDeCarga(#{vagonDeCarga1})
+		tren1.vagonesDePasajeros(#{vagonDePasajero1, vagonDePasajero2})
+		assert.notThat(tren1.formacionCompleja())
+	}
+	
+	
+	test "conductor experimentado retorna True"{
+		var tren1 = new Tren()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.ancho(3)	
+		vagonDePasajero1.largo(3)//2400
+		vagonDePasajero2.ancho(2) 
+		vagonDePasajero2.largo(9)// 5760
+		vagonDeCarga1.cargaMaxima(400)
+		locomotora1.peso(150)
+		tren1.locomotoras(#{locomotora1})
+		tren1.vagonesDeCarga(#{vagonDeCarga1})
+		tren1.vagonesDePasajeros(#{vagonDePasajero1, vagonDePasajero2})
+		var tren2 = new Tren()
+		var vagonDePasajero3 = new VagonDePasajero()
+		var vagonDePasajero4 = new VagonDePasajero()
+		var vagonDeCarga2 = new VagonDeCarga()
+		var locomotora2 = new Locomotora()
+		vagonDePasajero3.ancho(3)	
+		vagonDePasajero3.largo(3)//2400
+		vagonDePasajero4.ancho(2) 
+		vagonDePasajero4.largo(9)// 5760
+		vagonDeCarga2.cargaMaxima(400)
+		locomotora2.peso(2000)
+		tren2.locomotoras(#{locomotora2})
+		tren2.vagonesDeCarga(#{vagonDeCarga2})
+		tren2.vagonesDePasajeros(#{vagonDePasajero3, vagonDePasajero4})
+		var deposito1 = new Deposito()
+		deposito1.formaciones(#{tren1, tren2})
+		assert.that(deposito1.conductorExperimentado())
+	}
+}
