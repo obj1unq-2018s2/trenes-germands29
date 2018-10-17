@@ -1,13 +1,16 @@
+import deposito.*
+import vagonesYLocomotora.*
+
+
+
 class Tren{
 	var property locomotoras // lista de locomotoras
-	var property vagonesDeCarga //lista de vagones de carga
-	var property vagonesDePasajeros //lista de vagones de pasajeros
-
+	var property vagones  // lista de vagones de carga y de pasajeros
+	
+	
 	method vagonesLivianos(){
 
-	return 		vagonesDePasajeros.count{vagon => vagon.pesoMaximo()<2500} +
-				vagonesDeCarga.count {vagon => vagon.pesoMaximo() < 2500}
-		
+		return 	vagones.count{vagon => vagon.pesoMaximo()< 2500}
 	}
 	
 	method velocidadMaximaDeFormacion(){
@@ -25,8 +28,7 @@ class Tren{
 	}
 	
 	method pesoTotalDeVagones(){
-		return 	vagonesDeCarga.sum{vagon => vagon.pesoMaximo()} +
-				vagonesDePasajeros.sum{vagon => vagon.pesoMaximo()}
+		return 	vagones.sum{vagon => vagon.pesoMaximo()} 
 	}
 	
 	method arrastreUtilDeLocomotoras(){
@@ -40,18 +42,7 @@ class Tren{
 		
 	method vagonMasPesado(){
 	
-		var vagonDePasajeroMasPesado = if (!vagonesDePasajeros.isEmpty())
-										{ return vagonesDePasajeros.max{vagon => vagon.pesoMaximo()}}
-										else #{}
-										
-		
-		var vagonDeCargaMasPesado = if (!vagonesDeCarga.isEmpty())
-									{ return vagonesDeCarga.max{vagon => vagon.pesoMaximo()}}
-									else #{}
-									
-		 if (vagonDePasajeroMasPesado.pesoMaximo() >= vagonDeCargaMasPesado.pesoMaximo())
-		 			return vagonDePasajeroMasPesado
-		 else 		return vagonDeCargaMasPesado
+		return  vagones.max{vagon => vagon.pesoMaximo()}
 	}
 	
 	method pesoTotalDeLocomotoras(){
@@ -60,56 +51,11 @@ class Tren{
 	
 	
 	method formacionCompleja(){
-		var cantidadDeUnidades = locomotoras.size() + vagonesDePasajeros.size() + vagonesDeCarga.size()
+		var cantidadDeUnidades = locomotoras.size() + vagones.size() 
 		var pesoTotalDeLasUnidades = self.pesoTotalDeVagones() + self.pesoTotalDeLocomotoras()
 		
 		return (cantidadDeUnidades > 20) or (pesoTotalDeLasUnidades >= 10000)
 	}
-}
-	
-
-
-class Deposito {
-	var property formaciones 
-	var locomotoras
-	
-//	method agregarLocomotoraAFormacion(locomotora) = formaciones.add(locomotora)
-	
-	method vagonesMasPesadosDeCadaFormacion(){
-		var vagonesMasPesados= #{} 
-		formaciones.forEach{tren => vagonesMasPesados.add(tren.vagonMasPesado())}
-		
-		return vagonesMasPesados
-	}
-	
-	method conductorExperimentado(){
-		return formaciones.any{tren=> tren.formacionCompleja()}
-	}
-	
-}
-
-class VagonDePasajero{
-	var property largo
-	var property ancho
-	
-	method cantidadDePasajeros(){
-		if (ancho <= 2.5) return largo * 8
-		else return largo* 10  
-	}
-	method pesoMaximo() = self.cantidadDePasajeros()*80
-}
-
-
-class VagonDeCarga{
-	var property cargaMaxima 
-	method pesoMaximo() = cargaMaxima + 160
-}
-
-class Locomotora {
-	var property peso 
-	var property pesoMaximoQuePuedeArrastrar 
-	var property velocidadMaxima
-	method arrastreUtil()= pesoMaximoQuePuedeArrastrar - peso
 }
 
 
