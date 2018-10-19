@@ -195,4 +195,100 @@ describe "test de trenes"{
 		deposito1.formaciones(#{tren1, tren2})
 		assert.that(deposito1.conductorExperimentado())
 	}
+	
+	test "tiene suficientes banios debe retornar True"{
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var tren1 = new FormacionDeLargaDistancia()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero1.banios(0)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDePasajero2.banios(2)
+		vagonDeCarga1.cargaMaxima(2500)
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		tren1.locomotoras([locomotora1])
+		tren1.vagones([vagonDePasajero1, vagonDePasajero2, vagonDeCarga1])
+		assert.that(tren1.tieneSuficientesBanios() )
+	}
+	
+	
+	
+	test"formacion de larga distancia esta bien armada"{
+		var trenDeLarga = new FormacionDeLargaDistancia()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero1.banios(1)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDePasajero2.banios(2)
+		vagonDeCarga1.cargaMaxima(2500)
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		trenDeLarga.locomotoras([locomotora1])
+		trenDeLarga.vagones([vagonDePasajero1, vagonDePasajero2, vagonDeCarga1])
+		assert.that(trenDeLarga.formacionPuedeMoverse())
+		
+	}
+	
+	
+	test "agregar locomotora a formacion debe devolver el tren con el conjunto de vagones #{vagonDePasajero1}
+				y el conjunto de locomotoras #{locomotora1, locomotora2} "{
+		var deposito1 = new Deposito()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var locomotora1 = new Locomotora()
+		var locomotora2 = new Locomotora()
+		var locomotora3 = new Locomotora()
+		var tren1 = new Tren()
+		vagonDePasajero1.largo(4)
+		vagonDePasajero1.ancho(3) // peso maximo 3200
+		vagonDePasajero1.banios(0)
+		locomotora1.pesoMaximoQuePuedeArrastrar(1000)
+		locomotora1.peso(900)
+		locomotora1.velocidadMaxima(1000)
+		locomotora2.pesoMaximoQuePuedeArrastrar(4000)
+		locomotora2.peso(100)
+		locomotora2.velocidadMaxima(1000)
+		locomotora3.pesoMaximoQuePuedeArrastrar(2000)
+		locomotora3.peso(600)
+		locomotora3.velocidadMaxima(1000)
+		tren1.vagones(#{vagonDePasajero1})
+		tren1.locomotoras(#{locomotora1})
+		deposito1.formaciones(#{tren1})
+		deposito1.locomotoras(#{locomotora2, locomotora3})
+		deposito1.agregarLocomotoraAFormacion(tren1)
+		assert.equals(tren1.locomotoras(), #{locomotora1, locomotora2})
+		assert.equals(tren1.vagones(), #{vagonDePasajero1}) 
+		}
+	
+	test"el limite de velocidad de la formacion de larga distancia es 200"{
+		var trenDeLarga = new FormacionDeLargaDistancia()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero1.banios(1)
+		vagonDePasajero2.largo(5)
+		vagonDePasajero2.ancho(4)
+		vagonDePasajero2.banios(2)
+		vagonDeCarga1.cargaMaxima(2500)
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		trenDeLarga.locomotoras([locomotora1])
+		trenDeLarga.vagones([vagonDePasajero1, vagonDePasajero2, vagonDeCarga1])
+		trenDeLarga.uneCiudadesGrandes(true)
+		assert.equals(trenDeLarga.limiteDeVelocidad(), 200)
+	}
+	
+	
 }
