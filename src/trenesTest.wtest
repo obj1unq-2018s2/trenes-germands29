@@ -260,16 +260,16 @@ describe "test de trenes"{
 		locomotora3.pesoMaximoQuePuedeArrastrar(2000)
 		locomotora3.peso(600)
 		locomotora3.velocidadMaxima(1000)
-		tren1.vagones(#{vagonDePasajero1})
-		tren1.locomotoras(#{locomotora1})
-		deposito1.formaciones(#{tren1})
-		deposito1.locomotoras(#{locomotora2, locomotora3})
+		tren1.vagones([vagonDePasajero1])
+		tren1.locomotoras([locomotora1])
+		deposito1.formaciones([tren1])
+		deposito1.locomotoras([locomotora2, locomotora3])
 		deposito1.agregarLocomotoraAFormacion(tren1)
-		assert.equals(tren1.locomotoras(), #{locomotora1, locomotora2})
-		assert.equals(tren1.vagones(), #{vagonDePasajero1}) 
+		assert.equals(tren1.locomotoras(), [locomotora1, locomotora2])
+		assert.equals(tren1.vagones(), [vagonDePasajero1]) 
 		}
 	
-	test"el limite de velocidad de la formacion de larga distancia es 200"{
+	test"el limite de velocidad de la formacion de larga distancia es 90"{
 		var trenDeLarga = new FormacionDeLargaDistancia()
 		var vagonDePasajero1 = new VagonDePasajero()
 		var vagonDePasajero2 = new VagonDePasajero()
@@ -284,11 +284,35 @@ describe "test de trenes"{
 		vagonDeCarga1.cargaMaxima(2500)
 		locomotora1.peso(100)
 		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		locomotora1.velocidadMaxima(90)
 		trenDeLarga.locomotoras([locomotora1])
 		trenDeLarga.vagones([vagonDePasajero1, vagonDePasajero2, vagonDeCarga1])
 		trenDeLarga.uneCiudadesGrandes(true)
-		assert.equals(trenDeLarga.limiteDeVelocidad(), 200)
+		assert.equals(trenDeLarga.limiteDeVelocidad(), 90)
 	}
 	
+	// nunca va a ser un tren de alta velocidad , ya que en el punto anterior para que sea un tren de
+	// larga distancia su limite es 200, no entendi que es lo que me pide el enunciado
+	test "tren de alta velocidad esta bien armado"{
+		var trenDeAltaVelocidad1 = new TrenDeAltaVelocidad()
+		var vagonDePasajero1 = new VagonDePasajero()
+		var vagonDePasajero2 = new VagonDePasajero()
+		var vagonDeCarga1 = new VagonDeCarga()
+		var locomotora1 = new Locomotora()
+		vagonDePasajero1.largo(2)
+		vagonDePasajero1.ancho(2)
+		vagonDePasajero1.banios(1)
+		vagonDePasajero2.largo(3)
+		vagonDePasajero2.ancho(4)
+		vagonDePasajero2.banios(2)
+		vagonDeCarga1.cargaMaxima(2300)
+		locomotora1.peso(100)
+		locomotora1.pesoMaximoQuePuedeArrastrar(9000)
+		locomotora1.velocidadMaxima(90)
+		trenDeAltaVelocidad1.locomotoras([locomotora1])
+		trenDeAltaVelocidad1.vagones([vagonDePasajero1, vagonDePasajero2, vagonDeCarga1])
+		trenDeAltaVelocidad1.uneCiudadesGrandes(true)
+		assert.that(trenDeAltaVelocidad1.estaBienArmado())
+	}
 	
 }

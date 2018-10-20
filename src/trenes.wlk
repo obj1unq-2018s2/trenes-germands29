@@ -60,7 +60,8 @@ class Tren{
 	method estaBienArmado(){ return self.formacionPuedeMoverse() }
 	
 	method limiteDeVelocidad(){
-		 return locomotoras.max{locomotora => locomotora.velocidadMaxima()}	
+		 var locomotora = locomotoras.max{locomotora => locomotora.velocidadMaxima()}	
+		 return locomotora.velocidadMaxima()
 		}	
 }
 
@@ -72,9 +73,8 @@ class FormacionDeCortaDistancia inherits Tren {
 	}
 	
 	override method limiteDeVelocidad(){
-		return super().min(60) 
+		return super().min(60)
 	}
-
 }
 
 
@@ -84,8 +84,8 @@ class FormacionDeLargaDistancia inherits Tren {
 	}
 	
 	override method limiteDeVelocidad(){
-		if (uneCiudadesGrandes){ return 200	}
-				else return 150
+		if (uneCiudadesGrandes){ return super().min(200)	}
+				else return super().min(150)
 		}
 	
 	
@@ -94,4 +94,14 @@ class FormacionDeLargaDistancia inherits Tren {
 		var totalPasajeros = vagones.sum{vagon => vagon.cantidadDePasajeros()}
 		return totalBanios >= (totalPasajeros / 50).roundUp()
 	}
+}
+	
+class TrenDeAltaVelocidad inherits FormacionDeLargaDistancia {
+	override method estaBienArmado(){
+		
+		return super() and (vagones.size() == self.vagonesLivianos()) and (self.limiteDeVelocidad() <= 250)																
+	}
+	
+	// self.limiteDeVelocidad() <= 250  deberia ser MAYOR O IGUAL, pero nunca se va a cumplir por la condicion
+	// de la FormacionDeLargaDistancia , que su limite es como maximo, 200. 
 }

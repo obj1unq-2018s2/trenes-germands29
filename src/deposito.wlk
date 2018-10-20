@@ -3,8 +3,8 @@ class Deposito {
 	var property locomotoras
 	
 	method agregarLocomotoraAFormacion(formacion) {
-		var locomotora = locomotoras.
-		formacion.add(locomotora)
+		var locomotora = locomotoras.get(0)
+		formacion.locomotoras().add(locomotora)
 		if(!formacion.formacionPuedeMoverse()){
 			var locomotoraApta = self.getLocomotoraApta(formacion)
 			formacion.add(locomotoraApta)
@@ -14,7 +14,7 @@ class Deposito {
 	method getLocomotoraApta(formacion){
 		var locomotorasAptas = locomotoras.filter{locomotora => locomotora.arrastreUtilDeLocomotoras() >= formacion.kilosDeEmpujeFaltantes() }
 		return if(!locomotorasAptas.isEmpty()){
-			locomotorasAptas.asList().first()
+			locomotorasAptas.first()
 		} else {}
 	}
 
